@@ -121,7 +121,7 @@ class DualOutput:
             file_path: Path to markdown file for logging output.
         """
         self.terminal = sys.stdout
-        self.log_file = file_path.open("w")
+        self.log_file = file_path.open("w", encoding="utf-8")
         self._write_header()
 
     def _write_header(self) -> None:
@@ -309,7 +309,7 @@ def replace_in_file(
         print(f"  ⚠️  Skipping {file_path} (not found)")
         return
 
-    content = file_path.read_text()
+    content = file_path.read_text(encoding="utf-8")
     modified = content
 
     for old, new in replacements.items():
@@ -319,7 +319,7 @@ def replace_in_file(
         if dry_run:
             print(f"  📝 Would update {file_path}")
         else:
-            file_path.write_text(modified)
+            file_path.write_text(modified, encoding="utf-8")
             print(f"  ✅ Updated {file_path}")
     else:
         if dry_run:
@@ -338,7 +338,7 @@ def remove_authors_from_pyproject(dry_run: bool = False) -> None:
         print("  ⚠️  Skipping pyproject.toml (not found)")
         return
 
-    content = pyproject_path.read_text()
+    content = pyproject_path.read_text(encoding="utf-8")
 
     # Remove the authors array (supports single or multiple authors)
     # Matches: authors = [...] with any content between brackets
@@ -353,7 +353,7 @@ def remove_authors_from_pyproject(dry_run: bool = False) -> None:
         if dry_run:
             print("  📝 Would remove authors field from pyproject.toml")
         else:
-            pyproject_path.write_text(modified)
+            pyproject_path.write_text(modified, encoding="utf-8")
             print("  ✅ Removed authors field from pyproject.toml")
     else:
         if dry_run:
@@ -372,7 +372,7 @@ def reset_version_in_pyproject(dry_run: bool = False) -> None:
         print("  ⚠️  Skipping pyproject.toml (not found)")
         return
 
-    content = pyproject_path.read_text()
+    content = pyproject_path.read_text(encoding="utf-8")
 
     # Reset version to 0.1.0
     # Matches: version = "X.Y.Z" at start of line (after optional whitespace)
@@ -387,7 +387,7 @@ def reset_version_in_pyproject(dry_run: bool = False) -> None:
     if dry_run:
         print("  📝 Would reset version to 0.1.0 in pyproject.toml")
     else:
-        pyproject_path.write_text(modified)
+        pyproject_path.write_text(modified, encoding="utf-8")
         print("  ✅ Reset version to 0.1.0 in pyproject.toml")
 
 
@@ -415,7 +415,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     if dry_run:
         print("  📝 Would replace CHANGELOG.md with fresh template")
     else:
-        changelog_path.write_text(fresh_changelog)
+        changelog_path.write_text(fresh_changelog, encoding="utf-8")
         print("  ✅ Replaced CHANGELOG.md")
 
 
@@ -437,7 +437,7 @@ def replace_codeowners(dry_run: bool = False) -> None:
     if dry_run:
         print("  📝 Would replace .github/CODEOWNERS with fresh template")
     else:
-        codeowners_path.write_text(fresh_codeowners)
+        codeowners_path.write_text(fresh_codeowners, encoding="utf-8")
         print("  ✅ Replaced .github/CODEOWNERS")
 
 
